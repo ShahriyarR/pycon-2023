@@ -1,10 +1,11 @@
 from typing import Any, List
 
-from accounts.v1.daos import UserDAO
-from articles.models import Article
 from asyncpg.exceptions import ForeignKeyViolationError
 from esmerald import AsyncDAOProtocol
 from saffier import ObjectNotFound
+
+from blog.apps.accounts.v1.daos import UserDAO
+from blog.apps.articles.models import Article
 
 from .schemas import ArticleOut
 
@@ -40,8 +41,8 @@ class ArticleDAO(AsyncDAOProtocol):
                 created_at=str(article.created_at),
                 updated_at=str(article.updated_at),
             )
-        except ObjectNotFound:
-            raise ValueError(f"Article with ID '{obj_id}' not found.")
+        except ObjectNotFound as e:
+            raise ValueError(f"Article with ID '{obj_id}' not found.") from e
 
     async def create(self, **kwargs: Any) -> Any:
         """
@@ -52,8 +53,8 @@ class ArticleDAO(AsyncDAOProtocol):
             return await self.model.query.create(**kwargs)
         except ObjectNotFound as e:
             raise ValueError(str(e)) from e
-        except ForeignKeyViolationError:
-            raise ValueError(f"User with ID '{user.pk}' not found.")
+        except ForeignKeyViolationError as e:
+            raise ValueError(f"User with ID '{user.pk}' not found.") from e
 
     async def delete(self, obj_id: Any, **kwargs: Any) -> Any:
         """
@@ -69,10 +70,10 @@ class ArticleDAO(AsyncDAOProtocol):
         try:
             article = await self.model.query.get(id=obj_id, user__id=user.id)
             await article.delete()
-        except ObjectNotFound:
+        except ObjectNotFound as e:
             raise ValueError(
                 f"Article with ID '{obj_id}' for the user '{user_id}' was not found."
-            )
+            ) from e
 
     async def update(self, obj_id: Any, **kwargs: Any) -> Any:
         """
@@ -96,7 +97,7 @@ class ArticleDAO(AsyncDAOProtocol):
                 created_at=str(article.created_at),
                 updated_at=str(article.updated_at),
             )
-        except ObjectNotFound:
+        except ObjectNotFound as e:
             raise ValueError(
                 f"Article with ID '{obj_id}' for the user '{user_id}' was not found."
-            )
+            ) from e

@@ -126,12 +126,12 @@ def is_async_connection(url: DatabaseURL) -> bool:
     if not url.driver:
         return False
 
-    if (
-        (url.driver in settings.postgres_drivers)
-        or (url.driver in settings.mysql_drivers)
-        or (url.driver in settings.sqlite_drivers)
-        or url.driver in settings.mssql_drivers
-    ):
+    if url.driver in {
+        settings.postgres_drivers,
+        settings.mysql_drivers,
+        settings.sqlite_drivers,
+        settings.mssql_drivers,
+    }:
         return True
     return False
 

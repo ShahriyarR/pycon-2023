@@ -60,6 +60,11 @@ lint:
 	${PYTHON} -m black src tests --check --diff --config ${SETTINGS_FILENAME}
 	${PYTHON} -m isort src tests --check --diff --settings-file ${SETTINGS_FILENAME}
 
+secure:
+	${PYTHON} -m bandit -r src --config ${SETTINGS_FILENAME}
+	pip-audit .
+	${PYTHON} -m safety check
+
 ifndef VERBOSE
 .SILENT:
 endif

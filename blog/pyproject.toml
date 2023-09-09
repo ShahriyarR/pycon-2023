@@ -63,7 +63,7 @@ include = '\.pyi?$'
 skips = ["B311"]
 
 [tool.flake8]
-max-line-length = 88
+max-line-length = 95
 select = ["C", "E", "F", "W", "B", "B9"]
 ignore = ["B907", "B902"]
 exclude = ["__init__.py"]

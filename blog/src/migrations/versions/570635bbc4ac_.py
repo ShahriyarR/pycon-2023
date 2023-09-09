@@ -1,7 +1,7 @@
 """empty message
 
 Revision ID: 570635bbc4ac
-Revises: 
+Revises:
 Create Date: 2023-08-21 11:29:23.277961
 
 """
