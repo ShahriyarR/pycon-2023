@@ -14,38 +14,37 @@ from saffier import Database, Migrate, Registry
 
 database, registry = settings.db_access
 
+SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+
 
 def build_path():
     """
     Builds the path of the project and project root.
     """
-    SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
-
     if SITE_ROOT not in sys.path:
         sys.path.append(SITE_ROOT)
         sys.path.append(os.path.join(SITE_ROOT, "apps"))
 
 
-def get_migrations(app: "Esmerald", registry: "Registry") -> None:
+def get_migrations(app_: Esmerald, registry_: Registry) -> None:
     """
     Activates the migration system of Saffier with Esmerald
     """
-    Migrate(app=app, registry=registry)
+    Migrate(app=app_, registry=registry_)
 
 
-def get_admin(app: Esmerald, registry: Registry) -> None:
+def get_admin(app_: Esmerald, registry_: Registry) -> None:
     """
     Starts the admin
     """
-    from blog.apps.accounts.models import User
-
     from blog.admin import get_views
+    from blog.apps.accounts.models import User
 
     auth_backend = EmailAdminAuth(
         secret_key=settings.secret_key, auth_model=User, config=settings.jwt_config
     )
 
-    admin = Admin(app, registry.engine, authentication_backend=auth_backend)
+    admin = Admin(app_, registry_.engine, authentication_backend=auth_backend)
 
     # Get the views function from the "admin.py"
     get_views(admin)
@@ -60,7 +59,7 @@ def get_application(
     build_path()
 
     db = connection or database
-    app = Esmerald(
+    app_ = Esmerald(
         routes=[Include(namespace="blog.urls")],
         on_startup=[db.connect],
         on_shutdown=[db.disconnect],
@@ -69,11 +68,11 @@ def get_application(
 
     # Migrations
     db_registry = models or registry
-    get_migrations(app=app, registry=db_registry)
+    get_migrations(app_=app_, registry_=db_registry)
 
     # Admin
-    get_admin(app=app, registry=db_registry)
-    return app
+    get_admin(app_=app_, registry_=db_registry)
+    return app_
 
 
 app = get_application()

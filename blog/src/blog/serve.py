@@ -9,7 +9,7 @@ import os
 import uvicorn
 from esmerald.conf import settings
 
-from .main import app as app  # noqa
+from blog.main import app as app  # noqa
 
 if __name__ == "__main__":
     """

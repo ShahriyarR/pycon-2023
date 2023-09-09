@@ -14,13 +14,7 @@ This simple blgo application integrates [Esmerald][esmerald], [Saffier][saffier]
 1. There are two ways you can install the requirements:
 
     ```shell
-    $ pip install -r development.txt
-    ```
-
-    Or you can simply run:
-
-    ```shell
-    $ make requirements
+    $ make install-dev
     ```
 2. Start docker for local development.
 
@@ -30,18 +24,18 @@ This simple blgo application integrates [Esmerald][esmerald], [Saffier][saffier]
 3. Export environment variables to make your development easier.
 
     ```shell
-    $ export ESMERALD_SETTINGS_MODULE=blog.configs.development.settings.DevelopmentAppSettings
-    $ export SAFFIER_DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/blog
+    export ESMERALD_SETTINGS_MODULE=src.blog.configs.development.settings.DevelopmentAppSettings
+    export SAFFIER_DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/blog
     ```
 4. Run the existing migrations
 
     ```shell
-    $ saffier migrate
+    make migrate
     ```
 5. Start the local development.
    
     ```shell
-    esmerald runserver
+    make run
     ```
 6. Access the local documentation.
 
