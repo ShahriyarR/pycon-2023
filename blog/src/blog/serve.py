@@ -7,7 +7,6 @@ Esmerald's command-line utility for development purposes.
 import os
 
 import uvicorn
-
 from esmerald.conf import settings
 
 from .main import app as app  # noqa

@@ -7,7 +7,7 @@ from esmerald import AsyncDAOProtocol
 from posts.models import Post
 from saffier import ObjectNotFound
 
-from .schemas import Error, PostOut
+from .schemas import PostOut
 
 
 class PostDAO(AsyncDAOProtocol):
@@ -64,7 +64,10 @@ class PostDAO(AsyncDAOProtocol):
         post: Post = await self.model.query.create(user=user, article=article, **kwargs)
 
         return PostOut(
-            id=post.pk, content=post.content, created_at=str(post.created_at), user=user.username
+            id=post.pk,
+            content=post.content,
+            created_at=str(post.created_at),
+            user=user.username,
         )
 
     async def delete(self, obj_id: Any, **kwargs: Any) -> Any:

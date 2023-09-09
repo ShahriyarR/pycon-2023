@@ -51,7 +51,9 @@ def get_admin(app: Esmerald, registry: Registry) -> None:
     get_views(admin)
 
 
-def get_application(connection: Optional[Database] = None, models: Optional[Registry] = None):
+def get_application(
+    connection: Optional[Database] = None, models: Optional[Registry] = None
+):
     """
     This is optional. The function is only used for organisation purposes.
     """

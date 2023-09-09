@@ -93,4 +93,6 @@ async def update_article(data: ArticleUpdate, user: int, id: int) -> ArticleOut:
     Updates an article for a user by ID
     """
     article = ArticleDAO()
-    return await article.update(obj_id=id, user=user, **data.model_dump(exclude_none=True))
+    return await article.update(
+        obj_id=id, user=user, **data.model_dump(exclude_none=True)
+    )

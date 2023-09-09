@@ -8,13 +8,12 @@ from typing import Any, Union
 from alembic import context
 from databasez import DatabaseURL
 from rich.console import Console
-from sqlalchemy import create_engine
-from sqlalchemy.ext.asyncio import create_async_engine
-
 from saffier import settings
 from saffier.cli.constants import APP_PARAMETER
 from saffier.cli.env import MigrationEnv
 from saffier.exceptions import SaffierException
+from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine
 
 # The console used for the outputs
 console = Console()

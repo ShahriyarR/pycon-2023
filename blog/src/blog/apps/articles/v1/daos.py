@@ -70,7 +70,9 @@ class ArticleDAO(AsyncDAOProtocol):
             article = await self.model.query.get(id=obj_id, user__id=user.id)
             await article.delete()
         except ObjectNotFound:
-            raise ValueError(f"Article with ID '{obj_id}' for the user '{user_id}' was not found.")
+            raise ValueError(
+                f"Article with ID '{obj_id}' for the user '{user_id}' was not found."
+            )
 
     async def update(self, obj_id: Any, **kwargs: Any) -> Any:
         """
@@ -95,4 +97,6 @@ class ArticleDAO(AsyncDAOProtocol):
                 updated_at=str(article.updated_at),
             )
         except ObjectNotFound:
-            raise ValueError(f"Article with ID '{obj_id}' for the user '{user_id}' was not found.")
+            raise ValueError(
+                f"Article with ID '{obj_id}' for the user '{user_id}' was not found."
+            )
