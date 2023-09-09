@@ -20,11 +20,10 @@ from blog.apps.posts.v1.schemas import Error, PostIn, PostOut
         400: OpenAPIResponse(model=Error, description="Bad response"),
     },
 )
-async def posts(article_id: int) -> List[PostOut]:
+async def posts(article_id: int, post_dao: PostDAO) -> List[PostOut]:
     """
     Gets all posts.
     """
-    post_dao = PostDAO()
     return await post_dao.get_all(article_id=article_id)
 
 
@@ -38,12 +37,11 @@ async def posts(article_id: int) -> List[PostOut]:
         400: OpenAPIResponse(model=Error, description="Bad response"),
     },
 )
-async def create_post(data: PostIn, article_id: int) -> PostOut:
+async def create_post(data: PostIn, article_id: int, post_dao: PostDAO) -> PostOut:
     """
     Creates a post for a specfic article.
     """
-    posts_dao = PostDAO()
-    return await posts_dao.create(article_id=article_id, **data.model_dump())
+    return await post_dao.create(article_id=article_id, **data.model_dump())
 
 
 @delete(
@@ -55,9 +53,8 @@ async def create_post(data: PostIn, article_id: int) -> PostOut:
         400: OpenAPIResponse(model=Error, description="Bad response"),
     },
 )
-async def delete_post(article_id: int, post_id: int) -> None:
+async def delete_post(article_id: int, post_id: int, post_dao: PostDAO) -> None:
     """
     Deletes a post from an article
     """
-    posts_dao = PostDAO()
-    await posts_dao.delete(obj_id=post_id, article_id=article_id)
+    await post_dao.delete(obj_id=post_id, article_id=article_id)

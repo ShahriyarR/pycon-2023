@@ -19,6 +19,7 @@ from esmerald import Include, Inject
 
 from blog.apps.accounts.v1.daos import UserDAO
 from blog.apps.articles.v1.daos import ArticleDAO
+from blog.apps.posts.v1.daos import PostDAO
 from blog.interceptors.base import LoggingInterceptor
 
 route_patterns = [
@@ -33,6 +34,7 @@ route_patterns = [
         dependencies={
             "user_dao": Inject(lambda: UserDAO()),
             "article_dao": Inject(lambda: ArticleDAO()),
+            "post_dao": Inject(lambda: PostDAO()),
         },
     )
 ]
