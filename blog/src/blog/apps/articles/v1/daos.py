@@ -6,8 +6,7 @@ from saffier import ObjectNotFound
 
 from blog.apps.accounts.v1.daos import UserDAO
 from blog.apps.articles.models import Article
-
-from .schemas import ArticleOut
+from blog.apps.articles.v1.schemas import ArticleOut
 
 
 class ArticleDAO(AsyncDAOProtocol):

@@ -6,8 +6,8 @@ from typing import List
 from esmerald import delete, get, post, put
 from esmerald.openapi.datastructures import OpenAPIResponse
 
-from .daos import ArticleDAO
-from .schemas import ArticleIn, ArticleOut, ArticleUpdate, Error
+from blog.apps.articles.v1.daos import ArticleDAO
+from blog.apps.articles.v1.schemas import ArticleIn, ArticleOut, ArticleUpdate, Error
 
 
 @get(
