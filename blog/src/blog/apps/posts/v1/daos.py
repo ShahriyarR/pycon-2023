@@ -7,7 +7,6 @@ from blog.apps.accounts.v1.daos import UserDAO
 from blog.apps.articles.models import Article
 from blog.apps.articles.v1.daos import ArticleDAO
 from blog.apps.posts.models import Post
-
 from blog.apps.posts.v1.schemas import PostOut
 
 

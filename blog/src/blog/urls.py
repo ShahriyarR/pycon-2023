@@ -15,9 +15,11 @@ Examples:
         1. Import the Include object: from esmerald import Include
         2. Add a URL to route_patterns:  Gateway('/api/v1/', Include(namespace='myapp.urls'))
 """
-from esmerald import Include
+from esmerald import Include, Inject
 
 from blog.interceptors.base import LoggingInterceptor
+
+from blog.apps.accounts.v1.daos import UserDAO
 
 route_patterns = [
     Include(
@@ -28,5 +30,6 @@ route_patterns = [
             Include("/posts", namespace="posts.v1.urls"),
         ],
         interceptors=[LoggingInterceptor],
+        dependencies={"user_dao": Inject(lambda: UserDAO())}
     )
 ]
