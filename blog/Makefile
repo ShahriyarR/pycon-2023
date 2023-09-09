@@ -43,6 +43,9 @@ run: ## Starts the local server with production settings
 test: ## Runs the local tests with nose
 	ESMERALD_SETTINGS_MODULE=src.blog.configs.testing.settings.TestingAppSettings ${PYTHON} -m pytest -s $(TESTONLY)
 
+migrations:
+	${PYTHON} -m saffier --app src.blog.main:app makemigrations
+
 migrate:
 	${PYTHON} -m saffier --app src.blog.main:app migrate
 
