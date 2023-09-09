@@ -20,11 +20,10 @@ from blog.apps.articles.v1.schemas import ArticleIn, ArticleOut, ArticleUpdate, 
         400: OpenAPIResponse(model=Error, description="Bad response"),
     },
 )
-async def articles() -> List[ArticleOut]:
+async def articles(article_dao: ArticleDAO) -> List[ArticleOut]:
     """
     Lists all the articles.
     """
-    article_dao = ArticleDAO()
     return await article_dao.get_all()
 
 
@@ -38,12 +37,11 @@ async def articles() -> List[ArticleOut]:
         400: OpenAPIResponse(model=Error, description="Bad response"),
     },
 )
-async def article(id: int) -> ArticleOut:
+async def article(id: int, article_dao: ArticleDAO) -> ArticleOut:
     """
     Gets an article by ID
     """
-    article = ArticleDAO()
-    return await article.get(obj_id=id)
+    return await article_dao.get(obj_id=id)
 
 
 @post(
@@ -53,12 +51,11 @@ async def article(id: int) -> ArticleOut:
     description="Creates a user in the system",
     responses={400: OpenAPIResponse(model=Error, description="Bad response")},
 )
-async def create_article(data: ArticleIn) -> None:
+async def create_article(data: ArticleIn, article_dao: ArticleDAO) -> None:
     """
     Creates an article for a user
     """
-    article = ArticleDAO()
-    await article.create(**data.model_dump())
+    await article_dao.create(**data.model_dump())
 
 
 @delete(
@@ -70,12 +67,11 @@ async def create_article(data: ArticleIn) -> None:
         400: OpenAPIResponse(model=Error, description="Bad response"),
     },
 )
-async def delete_article(id: int, user: int) -> None:
+async def delete_article(id: int, user: int, article_dao: ArticleDAO) -> None:
     """
     Deletes an article by user id.
     """
-    article = ArticleDAO()
-    await article.delete(obj_id=id, user=user)
+    await article_dao.delete(obj_id=id, user=user)
 
 
 @put(
@@ -88,11 +84,12 @@ async def delete_article(id: int, user: int) -> None:
         400: OpenAPIResponse(model=Error, description="Bad response"),
     },
 )
-async def update_article(data: ArticleUpdate, user: int, id: int) -> ArticleOut:
+async def update_article(
+    data: ArticleUpdate, user: int, id: int, article_dao: ArticleDAO
+) -> ArticleOut:
     """
     Updates an article for a user by ID
     """
-    article = ArticleDAO()
-    return await article.update(
+    return await article_dao.update(
         obj_id=id, user=user, **data.model_dump(exclude_none=True)
     )

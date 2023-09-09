@@ -17,9 +17,9 @@ Examples:
 """
 from esmerald import Include, Inject
 
-from blog.interceptors.base import LoggingInterceptor
-
 from blog.apps.accounts.v1.daos import UserDAO
+from blog.apps.articles.v1.daos import ArticleDAO
+from blog.interceptors.base import LoggingInterceptor
 
 route_patterns = [
     Include(
@@ -30,6 +30,9 @@ route_patterns = [
             Include("/posts", namespace="posts.v1.urls"),
         ],
         interceptors=[LoggingInterceptor],
-        dependencies={"user_dao": Inject(lambda: UserDAO())}
+        dependencies={
+            "user_dao": Inject(lambda: UserDAO()),
+            "article_dao": Inject(lambda: ArticleDAO()),
+        },
     )
 ]
