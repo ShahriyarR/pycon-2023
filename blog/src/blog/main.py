@@ -39,7 +39,7 @@ def get_admin(app: Esmerald, registry: Registry) -> None:
     """
     from blog.apps.accounts.models import User
 
-    from .admin import get_views
+    from blog.admin import get_views
 
     auth_backend = EmailAdminAuth(
         secret_key=settings.secret_key, auth_model=User, config=settings.jwt_config

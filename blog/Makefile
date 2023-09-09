@@ -37,14 +37,14 @@ install-flit:
 
 .PHONY: run
 run: ## Starts the local server with production settings
-	ESMERALD_SETTINGS_MODULE=blog.configs.development.settings.DevelopmentAppSettings ${PYTHON} -m blog.serve
+	ESMERALD_SETTINGS_MODULE=src.blog.configs.development.settings.DevelopmentAppSettings ${PYTHON} -m blog.serve
 
 .PHONY: test
 test: ## Runs the local tests with nose
-	ESMERALD_SETTINGS_MODULE=blog.configs.testing.settings.TestingAppSettings ${PYTHON} -m pytest -s $(TESTONLY)
+	ESMERALD_SETTINGS_MODULE=src.blog.configs.testing.settings.TestingAppSettings ${PYTHON} -m pytest -s $(TESTONLY)
 
 migrate:
-	${PYTHON} -m saffier --app src.blog migrate
+	${PYTHON} -m saffier --app src.blog.main:app migrate
 
 format:
 	${PYTHON} -m isort src tests --force-single-line-imports --settings-file ${SETTINGS_FILENAME}
