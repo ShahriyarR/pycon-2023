@@ -1,5 +1,0 @@
--r base.txt
-pytest
-pytest-spec
-pytest-asyncio
-saffier[testing]>=0.17.0

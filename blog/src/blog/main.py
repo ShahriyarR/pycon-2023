@@ -37,7 +37,7 @@ def get_admin(app: Esmerald, registry: Registry) -> None:
     """
     Starts the admin
     """
-    from accounts.models import User
+    from blog.apps.accounts.models import User
 
     from .admin import get_views
 

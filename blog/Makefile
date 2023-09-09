@@ -1,3 +1,13 @@
+ifdef OS
+	PYTHON ?= .venv/Scripts/python.exe
+	TYPE_CHECK_COMMAND ?= echo Pytype package doesn't support Windows OS
+else
+	PYTHON ?= .venv/bin/python
+	TYPE_CHECK_COMMAND ?= ${PYTHON} -m pytype --config=pytype.cfg src
+endif
+
+SETTINGS_FILENAME = pyproject.toml
+
 .DEFAULT_GOAL := help
 
 .PHONY: help
@@ -15,18 +25,37 @@ clean_pyc: ## Cleans all *.pyc in the system
 clean_pycache: ## Removes the __pycaches__
 	find . -type d -name "*__pycache__*" -delete
 
+
+install:
+	${PYTHON} -m flit install --env --deps=production
+
+install-dev:
+	${PYTHON} -m flit install -s --env --deps=develop --symlink
+
+install-flit:
+	${PYTHON} -m pip install flit==3.8.0
+
 .PHONY: run
 run: ## Starts the local server with production settings
-	ESMERALD_SETTINGS_MODULE=blog.configs.development.settings.DevelopmentAppSettings python -m blog.serve
-
-.PHONY: requirements
-requirements: ## Installs all the requirements
-	pip install -r requirements/development.txt
+	ESMERALD_SETTINGS_MODULE=blog.configs.development.settings.DevelopmentAppSettings ${PYTHON} -m blog.serve
 
 .PHONY: test
 test: ## Runs the local tests with nose
-	ESMERALD_SETTINGS_MODULE=blog.configs.testing.settings.TestingAppSettings pytest -s $(TESTONLY)
+	ESMERALD_SETTINGS_MODULE=blog.configs.testing.settings.TestingAppSettings ${PYTHON} -m pytest -s $(TESTONLY)
 
+migrate:
+	${PYTHON} -m saffier --app src.blog migrate
+
+format:
+	${PYTHON} -m isort src tests --force-single-line-imports --settings-file ${SETTINGS_FILENAME}
+	${PYTHON} -m autoflake --remove-all-unused-imports --recursive --remove-unused-variables --in-place src --exclude=__init__.py
+	${PYTHON} -m black src tests --config ${SETTINGS_FILENAME}
+	${PYTHON} -m isort src tests --settings-file ${SETTINGS_FILENAME}
+
+lint:
+	${PYTHON} -m flake8 --toml-config ${SETTINGS_FILENAME} --max-complexity 5 --max-cognitive-complexity=6 src
+	${PYTHON} -m black src tests --check --diff --config ${SETTINGS_FILENAME}
+	${PYTHON} -m isort src tests --check --diff --settings-file ${SETTINGS_FILENAME}
 
 ifndef VERBOSE
 .SILENT:

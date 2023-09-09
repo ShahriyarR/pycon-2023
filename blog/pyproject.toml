@@ -1,0 +1,113 @@
+[build-system]
+requires = ["flit_core==3.8.0"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "blog"
+authors = [{name = "Shahriyar Rzayev", email = "rzayev.sehriyar@gmail.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: MIT License"]
+dynamic = ["version", "description"]
+dependencies = [
+    "esmerald[all]>=2.0.5",
+    "esmerald-admin[saffier]>=0.3.0",
+    "saffier[postgres]>=0.17.0",
+    "slugify>=0.0.1",
+    "uvicorn>=0.23.2"
+]
+
+[project.urls]
+Home = "https://github.com/ShahriyarR/pycon-2023"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "autoflake",
+    "pytype; platform_system != 'Windows'",
+    "flake8",
+    "Flake8-pyproject",
+    "bandit",
+    "flake8-bugbear",
+    "flake8-cognitive-complexity",
+    "pre-commit",
+    "safety",
+    "pip-audit",
+    "ipdb"
+]
+
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-spec",
+    "pytest-asyncio",
+    "saffier[testing]>=0.17.0"
+]
+
+[tool.isort]
+profile = "black"
+py_version = 310
+line_length = 88
+order_by_type = false
+skip = [".gitignore", ".dockerignore"]
+extend_skip = [".md", ".json"]
+skip_glob = ["docs/*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+
+[tool.bandit]
+skips = ["B311"]
+
+[tool.flake8]
+max-line-length = 88
+select = ["C", "E", "F", "W", "B", "B9"]
+ignore = ["B907", "B902"]
+exclude = ["__init__.py"]
+
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration relatively slow (deselect with '-m \"not integration\"')",
+    "serial",
+]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "-ra",
+]
+testpaths = "tests"
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+    ]
+
+ignore_errors = true
+
+[tool.coverage.html]
+directory = "htmlcov"

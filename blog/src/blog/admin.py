@@ -1,7 +1,7 @@
-from accounts.models import User as UserModel
-from articles.models import Article as ArticleModel
+from blog.apps.accounts.models import User as UserModel
+from blog.apps.articles.models import Article as ArticleModel
 from esmerald_admin import Admin, ModelView
-from posts.models import Post as PostModel
+from blog.apps.posts.models import Post as PostModel
 
 User = UserModel.declarative()
 Article = ArticleModel.declarative()
