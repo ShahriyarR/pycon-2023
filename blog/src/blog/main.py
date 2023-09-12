@@ -6,11 +6,15 @@ import os
 import sys
 from typing import Optional
 
-from esmerald import Esmerald, Include, settings
+from esmerald import Esmerald, Include, Inject, settings
 from esmerald.exception_handlers import value_error_handler
 from esmerald_admin import Admin
 from esmerald_admin.backends.saffier.email import EmailAdminAuth
 from saffier import Database, Migrate, Registry
+
+from blog.apps.accounts.v1.daos import UserDAO
+from blog.apps.articles.v1.daos import ArticleDAO
+from blog.apps.posts.v1.daos import PostDAO
 
 database, registry = settings.db_access
 
@@ -64,6 +68,11 @@ def get_application(
         on_startup=[db.connect],
         on_shutdown=[db.disconnect],
         exception_handlers={ValueError: value_error_handler},
+        dependencies={
+            "user_dao": Inject(lambda: UserDAO()),
+            "article_dao": Inject(lambda: ArticleDAO()),
+            "post_dao": Inject(lambda: PostDAO()),
+        },
     )
 
     # Migrations
